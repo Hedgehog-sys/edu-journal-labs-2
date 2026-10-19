@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Журнал посещаемости{% endblock %}
+{% block content %}
+    <h1>Журнал посещаемости студентов</h1>
+    <table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%;">
+        <thead>
+            <tr style="background: #f5f7fa;">
+                <th>Дата</th>
+                <th>Студент</th>
+                <th>Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for att in attendances %}
+                <tr>
+                    <td>{{ att.date }}</td>
+                    <td>{{ att.student.name }}</td>
+                    <td>
+                        {% if att.present %}
+                            <span style="color: green; font-weight: bold;">Присутствовал</span>
+                        {% else %}
+                            <span style="color: red;">Отсутствовал</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3">Записей в журнале пока нет.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

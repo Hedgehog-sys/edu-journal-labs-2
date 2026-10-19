@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Электронный журнал{% endblock %}</title>
+    {% load static %}
+    <link href="{% static 'journal/css/styles.css' %}" rel="stylesheet">
+</head>
+<body>
+    <nav>
+        <ul class="main-navigation-menu">
+            {% for item in menu %}
+                <li><a href="{% url item.url_name %}">{{ item.title }}</a></li>
+            {% endfor %}
+            
+            {% if user.is_authenticated %}
+                {% if user.is_staff %}
+                    <li><a href="{% url 'attendance_add' %}">Отметить посещаемость</a></li>
+                {% endif %}
+                <li>
+                    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" style="background: none; border: none; color: #1a0dab; cursor: pointer; font-family: Arial, sans-serif; font-size: 16px; padding: 0; text-decoration: underline;">
+                            Выйти ({{ user.username }})
+                            <!-- {{ user.username }} -->
+                        </button>
+                    </form>
+                </li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Войти</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <main class="content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; «Электронный журнал»</p>
+    </footer>
+</body>
+</html>
