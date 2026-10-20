@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Статистика посещаемости{% endblock %}
+{% block content %}
+    <h1>Статистика посещаемости по студентам</h1>
+    
+    <form method="get" style="margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; width: fit-content;">
+        {{ form.as_p }}
+        <button type="submit">Применить фильтр</button>
+        <a href="{% url 'attendance_stats' %}" style="margin-left: 10px;">Сбросить</a>
+    </form>
+
+    {% if stats %}
+    <table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%;"> 
+        <thead>
+            <tr>
+                <th>Студент</th>
+                <th>Группа</th>
+                <th>Всего отметок</th>
+                <th>Присутствия</th>
+                <th>Пропуски</th>
+                <th>Посещаемость</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in stats %}
+                <tr>
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.group.name }}</td>
+                    <td>{{ student.total }}</td>
+                    <td>{{ student.attended }}</td>
+                    <td>{{ student.absences }}</td>
+                    <td>
+                        {% if student.total %}
+                            {{ student.attendance_percent|floatformat:1 }}%
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="6">Студентов пока нет.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+{% endblock %}

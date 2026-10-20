@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Статистика по группам{% endblock %}
+{% block content %}
+    <h1>Суммарная статистика по учебным группам</h1>
+    <table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%;">
+        <thead>
+            <tr>
+                <th>Название группы</th>
+                <th>Количество студентов</th>
+                <th>Суммарно присутствий</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for group in group_stats %}
+                <tr>
+                    <td>{{ group.name }}</td>
+                    <td>{{ group.student_count }}</td>
+                    <td>{{ group.present_count }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3">Групп в базе данных пока нет.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

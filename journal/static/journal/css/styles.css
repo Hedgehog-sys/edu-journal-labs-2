@@ -30,3 +30,8 @@ nav ul {
 .main-navigation-menu {
     border-bottom: 1px solid #dee2e6;
 }
+
+nav ul, nav li {
+    display: inline !important;
+    margin-right: 10px;
+}

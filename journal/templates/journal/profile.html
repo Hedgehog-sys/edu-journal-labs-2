@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Мой профиль{% endblock %}
+{% block content %}
+    <h1>Личный кабинет</h1>
+    
+    {% if student %}
+        <p><b>ФИО:</b> {{ student.name }}</p>
+        <p><b>Группа:</b> {{ student.group.name }}</p>
+    {% else %}
+        <p>Профиль студента не найден.</p>
+        <p>Обратитесь к администратору для привязки профиля.</p>
+    {% endif %}
+{% endblock %}

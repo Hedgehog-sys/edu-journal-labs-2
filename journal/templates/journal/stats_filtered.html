@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Должники по посещаемости{% endblock %}
+{% block content %}
+    <h1>Студенты с пропусками больше 5 ({{ title }})</h1>
+    
+    <p><a href="{% url 'stats_by_name' %}">Сортировать по имени</a> | 
+       <a href="{% url 'stats_by_count' %}">Сортировать по убыванию пропусков</a></p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Студент</th>
+                <th>Группа</th>
+                <th>Всего отметок</th>
+                <th>Пропуски (больше 5)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in stats %}
+                <tr>
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.group.name }}</td>
+                    <td>{{ student.total }}</td>
+                    <td><span style="color: red; font-weight: bold;">{{ student.absences }}</span></td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">Студентов с числом пропусков больше 5 не найдено.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

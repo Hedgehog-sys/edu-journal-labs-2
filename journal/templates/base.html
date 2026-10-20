@@ -13,23 +13,40 @@
                 <li><a href="{% url item.url_name %}">{{ item.title }}</a></li>
             {% endfor %}
             
-            {% if user.is_authenticated %}
-                {% if user.is_staff %}
-                    <li><a href="{% url 'attendance_add' %}">Отметить посещаемость</a></li>
-                {% endif %}
-                <li>
-                    <form action="{% url 'logout' %}" method="post" style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit" style="background: none; border: none; color: #1a0dab; cursor: pointer; font-family: Arial, sans-serif; font-size: 16px; padding: 0; text-decoration: underline;">
-                            Выйти ({{ user.username }})
-                            <!-- {{ user.username }} -->
-                        </button>
-                    </form>
-                </li>
-            {% else %}
+            {% if not user.is_authenticated %}
                 <li><a href="{% url 'login' %}">Войти</a></li>
             {% endif %}
         </ul>
+
+        {% if user.is_authenticated %}
+        <ul class="main-navigation-menu" style="margin-top: 5px;">
+
+            {% if user.is_teacher %}
+                <li><a href="{% url 'attendance_add' %}">Отметить посещаемость</a></li>
+                <li><a href="{% url 'attendance_stats' %}">Статистика студентов</a></li>
+                <li><a href="{% url 'group_stats' %}">Статистика групп</a></li>
+                <li><a href="{% url 'stats_by_name' %}">Должники (пропуски > 5)</a></li>
+                
+                {% if request.resolver_match.url_name in 'attendance_stats group_stats stats_by_name stats_by_count' %}
+                    <li><a href="{% url 'home' %}">Назад</a></li>
+                {% endif %}
+            {% endif %}
+
+            {% if user.is_student and not user.is_teacher %}
+                <li><a href="{% url 'profile' %}">Мой профиль</a></li>
+                <li><a href="{% url 'my_attendance' %}">Моя посещаемость</a></li>
+            {% endif %}
+
+            <li>
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" style="background: none; border: none; color: #1a0dab; cursor: pointer; font-family: Arial, sans-serif; font-size: 16px; padding: 0; text-decoration: underline;">
+                        Выйти ({{ user.username }})
+                    </button>
+                </form>
+            </li>
+        </ul>
+        {% endif %}
     </nav>
 
     <main class="content">
